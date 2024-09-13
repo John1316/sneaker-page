@@ -1,0 +1,3 @@
+type ModalProps = {
+    videoUrl: string
+}
