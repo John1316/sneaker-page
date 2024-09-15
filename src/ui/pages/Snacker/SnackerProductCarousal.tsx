@@ -173,7 +173,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion"; // Importing Framer Motion
 import "./SnackerProduct.css"; // Importing the CSS file
 import ModalPopup from "../../components/ModalPopup";
-import { FaShoppingCart, FaArrowLeft, FaArrowRight, FaHeart } from "react-icons/fa"; // Importing the cart icon
+import { FaShoppingCart, FaArrowLeft, FaArrowRight, FaHeart, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa"; // Importing the cart icon
 
 const SneakerProductCarousel = ({ products }: ProductProps) => {
   // State to track the current product index
@@ -229,7 +229,30 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
   const handleThumbnailClick = (image: any) => {
     setMainImage(image); // Load the clicked image as the main image
   };
-
+  const renderStars = (rating: number) => {
+    const fullStars = Math.floor(rating); // Full stars
+    const hasHalfStar = rating % 1 >= 0.5; // Check if there's a half star
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // Calculate remaining empty stars
+  
+    const stars = [];
+  
+    // Push full stars
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} />);
+    }
+  
+    // Push half star if applicable
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" />);
+    }
+  
+    // Push empty stars
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} />);
+    }
+  
+    return stars;
+  };
   // Function to add selected product to cart
   const handleAddToCart = () => {
     if (selectedSize && selectedColor) {
@@ -263,14 +286,6 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
     setWishlistItems(storedWishlistItems);
   }, []);
   // Save cart to localStorage when cartItems change
-// useEffect(() => {
-//   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-// }, [cartItems]);
-
-// // Save wishlist to localStorage when wishlistItems change
-// useEffect(() => {
-//   localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
-// }, [wishlistItems]);
     // Function to add/remove product from wishlist
     const handleToggleWishlist = () => {
       const isInWishlist = wishlistItems.some(
@@ -334,7 +349,7 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
             {selectedColor?.images.map((image: any, index: any) => (
               <motion.img
                 key={index}
-                className="thumbnail"
+                className={`thumbnail ${mainImage === image ? "selected" : ""}`}
                 src={image}
                 alt={`thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
@@ -392,11 +407,14 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
             </motion.div>
           </div>
 
-          <div className="reviews-section">
-            <p>Reviews: {currentProduct.rate}★</p>
-          </div>
+          <div className="reviews-section flex justify-between items-center">
+        <p>Reviews:</p>
+        <div className="stars flex items-center gap-[8px]">
+          {renderStars(currentProduct.rate)}
+        </div>
+      </div>
 
-          <p className="price">
+          <p className="price flex justify-between items-center ">
             Price: <span>${currentProduct.price}</span>
           </p>
         </div>

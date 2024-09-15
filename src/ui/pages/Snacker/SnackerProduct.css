@@ -132,6 +132,10 @@ body {
     border: 1px solid #ccc;
   }
   
+  .thumbnail.selected {
+    border-color: #000;
+    transform: scale(1.1) !important;
+  }
   .thumbnail:hover {
     border-color: #000;
   }
@@ -164,7 +168,10 @@ body {
     justify-content: center;
     cursor: pointer;
   }
-  
+  .size-btn:disabled {
+    opacity: .5;
+    cursor: no-drop;
+  }
   .size-btn.selected {
     background-color: #000;
     color: #fff;
