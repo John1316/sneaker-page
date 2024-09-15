@@ -18,6 +18,3 @@
     images: string[]
   }
   
-type ProductProps = {
-    products: Product[]
-}
