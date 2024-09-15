@@ -57,7 +57,19 @@ body {
     min-height: 70vh;
     align-items: center;
   }
-  
+  @media screen and (max-width: 660px){
+    .product-section {
+      display: block;
+    }
+    .footer{
+      gap: 30px;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .footer-item{
+      width: 100%;
+    }
+  }
   /* Left Column - Description */
   .left-column {
   }
@@ -213,7 +225,11 @@ body {
     align-items: center;
     padding: 24px 0;
   }
-  
+  .footer-item{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
   .nav-btn {
     font-size: 1.2rem;
     cursor: pointer;

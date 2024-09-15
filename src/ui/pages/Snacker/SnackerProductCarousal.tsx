@@ -170,6 +170,7 @@
 // export default SneakerProductCarousel;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion"; // Importing Framer Motion
 import "./SnackerProduct.css"; // Importing the CSS file
 import ModalPopup from "../../components/ModalPopup";
 import { FaShoppingCart, FaArrowLeft, FaArrowRight, FaHeart } from "react-icons/fa"; // Importing the cart icon
@@ -313,105 +314,103 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
     );
   return (
     <div className="product__container">
-      {/* Navbar */}
       <div className="navbar">
         <h1 className="logo">kalli</h1>
         <button className="back-btn" onClick={handlePrev}>Back</button>
-
-        {/* Cart Icon with Badge */}
         <div className="cart-icon">
           <FaShoppingCart size={24} />
-          {cartItems.length > 0 && (
-            <span className="cart-badge">{cartItems.length}</span>
-          )}
+          {cartItems.length > 0 && <span className="cart-badge">{cartItems.length}</span>}
         </div>
       </div>
 
-      {/* Product Section */}
       <div className="product-section">
-        {/* First Div - Description */}
         <div className="left-column">
           <p className="brand">{currentProduct.category}</p>
           <h2 className="product-title">{currentProduct.title}</h2>
           <p className="product-description">{currentProduct.description}</p>
-          <div className="thumbnails">
+          
+          {/* Thumbnails with animation */}
+          <motion.div className="thumbnails" layout>
             {selectedColor?.images.map((image: any, index: any) => (
-              <img
+              <motion.img
                 key={index}
                 className="thumbnail"
                 src={image}
                 alt={`thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
               />
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        {/* Second Div - Main Image */}
         <div className="main-image-column">
-          <img className="main-image" src={mainImage} alt={currentProduct.title} />
+          {/* Main Image Animation */}
+          <motion.img
+            className="main-image"
+            src={mainImage}
+            alt={currentProduct.title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            key={mainImage} // Ensure it re-renders with animation when the main image changes
+          />
         </div>
 
-        {/* Third Div - Size, Color, Reviews */}
         <div className="details-column">
-          {/* Size Options */}
           <div className="size-section">
             <p className="size-label">Size</p>
-            <div className="sizes">
+            <motion.div className="sizes" layout>
               {[37, 38, 39, 40, 41, 42].map((size) => (
-                <button
+                <motion.button
                   key={size}
                   className={`size-btn ${selectedSize === size ? "selected" : ""}`}
                   onClick={() => handleSizeClick(size)}
-                  disabled={!currentProduct.size.includes(size)} // Disable button if size does not exist
+                  disabled={!currentProduct.size.includes(size)}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {size}
-                </button>
+                </motion.button>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Color Options */}
           <div className="color-section">
             <p className="color-label">Color</p>
-            <div className="colors">
+            <motion.div className="colors" layout>
               {currentProduct.colors.map((color) => (
-                <div
+                <motion.div
                   key={color.name}
                   className={`color ${selectedColor?.name === color.name ? "selected" : ""}`}
                   style={{ backgroundColor: color.hex }}
                   onClick={() => handleColorClick(color)}
-                ></div>
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.3 }}
+                />
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Reviews */}
           <div className="reviews-section">
             <p>Reviews: {currentProduct.rate}★</p>
           </div>
 
-          {/* Price */}
           <p className="price">
             Price: <span>${currentProduct.price}</span>
           </p>
-
-          {/* Add to Cart Button */}
-   
         </div>
       </div>
 
-      {/* Footer - Navigation */}
       <div className="footer">
         <ModalPopup videoUrl={currentProduct.video || ""} />
-        <div className="flex items-center gap-[48px]">
+        <div className="footer-item">
           <div className="flex gap-[12px]">
             <button className="nav-btn" onClick={handlePrev}>
-              <FaArrowLeft size={24}/>
+              <FaArrowLeft size={24} />
             </button>
             <button className="nav-btn" onClick={handleNext}>
-            <FaArrowRight size={24}/>
-
+              <FaArrowRight size={24} />
             </button>
           </div>
           <div className="paginations flex gap-[12px]">
@@ -425,15 +424,14 @@ const SneakerProductCarousel = ({ products }: ProductProps) => {
                 ))
               : ""}
           </div>
-
         </div>
-        <div className="flex items-center gap-[24px]">
-          <button className="add-to-cart" onClick={handleAddToCart}>
+        <div className="footer-item">
+          <motion.button className="add-to-cart" onClick={handleAddToCart} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             Add to Cart
-          </button>
+          </motion.button>
           <div className="wishlist-icon" onClick={handleToggleWishlist}>
-          <FaHeart size={24} color={isInWishlist ? "red" : "black"} />
-        </div>
+            <FaHeart size={24} color={isInWishlist ? "red" : "black"} />
+          </div>
         </div>
       </div>
     </div>

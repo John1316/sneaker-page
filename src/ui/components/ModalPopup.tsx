@@ -17,10 +17,12 @@ const ModalPopup = ({ videoUrl }: ModalProps) => {
     setIsOpen(false);
   };
 
-  return (
-    <div>
+  return <>
+      <div className="footer-item">
+        <button onClick={openModal} className="open-modal-btn">Play Video</button>
+
+      </div>
       {/* Button to open the modal */}
-      <button onClick={openModal} className="open-modal-btn">Play Video</button>
 
       {/* Modal Structure */}
       {isOpen && (
@@ -43,8 +45,7 @@ const ModalPopup = ({ videoUrl }: ModalProps) => {
           </div>
         </div>
       )}
-    </div>
-  );
+    </>
 };
 
 export default ModalPopup;
